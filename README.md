@@ -1,69 +1,46 @@
-# Database Management System
+# PeopleBase
 
-## Overview
-This is a simple CRUD-based database management system built with Flask and SQLite. It allows users to manage employee records, including adding, updating, and deleting employees.
+A focused Flask and SQLAlchemy application for managing structured employee records.
 
-## Features
-- View all employees in the database
-- Add new employees with name, position, and salary
-- Update existing employee details
-- Delete employees from the database
-- Simple and responsive UI using Bootstrap
-- SQLite database for lightweight storage
+## What it demonstrates
 
-## Installation & Setup
-### 1. Clone the Repository
+- Application-factory architecture and environment-based configuration
+- Create, read, update, and delete workflows
+- Server-side validation with useful error states
+- POST-only destructive actions
+- Responsive, accessible server-rendered templates
+- Isolated integration tests across supported Python versions
+
+## Run locally
+
 ```bash
-git clone https://github.com/<your-username>/Database-Management-System.git
-cd Database-Management-System
+git clone https://github.com/patrickking67/python-database.git
+cd python-database
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements-dev.txt
+flask --app app run --debug
 ```
 
-### 2. Create a Virtual Environment
+Open [http://127.0.0.1:5000](http://127.0.0.1:5000). The SQLite database is created under `instance/` and is ignored by Git.
+
+## Verify
+
 ```bash
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+pytest -q
+python scripts/check-ai-config.py
 ```
 
-### 3. Install Dependencies
-```bash
-pip install Flask Flask-SQLAlchemy
-pip freeze > requirements.txt
-```
+## Configuration
 
-### 4. Run the Application
-```bash
-python app.py
-```
-Then, open [http://127.0.0.1:5000/](http://127.0.0.1:5000/) in your browser.
+| Variable | Purpose | Default |
+| --- | --- | --- |
+| `DATABASE_URL` | SQLAlchemy database connection | Local SQLite |
+| `SECRET_KEY` | Session and flash-message signing | Development-only value |
+| `FLASK_DEBUG` | Enables debug mode when set to `1` | Disabled |
 
-### 5. Close the Application
-To stop the Flask server, press `CTRL+C` in the terminal.
-
-## File Structure
-```
-Database-Management-System/
-├── app.py                # Main Flask application
-├── db.db                 # SQLite database (auto-created)
-├── templates/            # HTML templates for UI
-│   ├── base.html
-│   ├── home.html
-│   ├── view_employees.html
-│   ├── add_employee.html
-│   └── update_employee.html
-├── .gitignore            # Git ignore file
-└── requirements.txt      # Python dependencies
-```
-
-## Commit & Push Changes
-### 1. Add, Commit, and Push to GitHub
-```bash
-git add .
-git commit -m "Initial commit with working Flask CRUD app"
-git push origin main
-```
+Set a unique `SECRET_KEY` and add authentication before any public deployment. See [architecture](docs/architecture.md) and [security policy](SECURITY.md).
 
 ## License
-This project is licensed under the MIT License.
 
-## Author
-**Patrick King** - 2025
+MIT © Patrick King

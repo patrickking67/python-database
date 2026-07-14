@@ -1,29 +1,32 @@
 {% extends 'base.html' %}
+{% block title %}Employee directory · PeopleBase{% endblock %}
 {% block content %}
-<h2>Employees</h2>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Salary</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for emp in employees %}
-        <tr>
-            <td>{{ emp.id }}</td>
-            <td>{{ emp.name }}</td>
-            <td>{{ emp.position }}</td>
-            <td>{{ emp.salary }}</td>
-            <td>
-                <a href="{{ url_for('update_employee', employee_id=emp.id) }}" class="btn btn-primary btn-sm">Update</a>
-                <a href="{{ url_for('delete_employee', employee_id=emp.id) }}" class="btn btn-danger btn-sm">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<section class="directory-heading">
+    <div><p class="eyebrow">Employee records</p><h1>Directory</h1><p>{{ employees|length }} record{% if employees|length != 1 %}s{% endif %}, sorted by name.</p></div>
+    <a class="button" href="{{ url_for('add_employee') }}">Add employee</a>
+</section>
+{% if employees %}
+<div class="table-wrap">
+    <table>
+        <thead><tr><th>Name</th><th>Position</th><th>Annual salary</th><th><span class="visually-hidden">Actions</span></th></tr></thead>
+        <tbody>
+            {% for employee in employees %}
+            <tr>
+                <td><strong>{{ employee.name }}</strong><small>ID {{ employee.id }}</small></td>
+                <td>{{ employee.position }}</td>
+                <td>${{ "{:,.2f}".format(employee.salary) }}</td>
+                <td class="row-actions">
+                    <a href="{{ url_for('update_employee', employee_id=employee.id) }}">Edit</a>
+                    <form method="post" action="{{ url_for('delete_employee', employee_id=employee.id) }}" onsubmit="return confirm('Delete this employee?')">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<section class="empty-state"><span>0 records</span><h2>Your directory is ready.</h2><p>Add the first employee to begin.</p><a class="button" href="{{ url_for('add_employee') }}">Add employee</a></section>
+{% endif %}
 {% endblock %}
